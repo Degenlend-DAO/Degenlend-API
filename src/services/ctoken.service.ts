@@ -37,7 +37,22 @@ export class CTokenService {
     return tx.hash;
   }
 
+  async getCash(): Promise<string> {
+    return this.contract.getCash();
+  }
+
   async getBalance(userAddress: string): Promise<string> {
     return this.contract.balanceOf(userAddress);
   }
+
+  async getDecimals(): Promise<number> {
+    return this.contract.decimals();
+  }
+
+  async getExchangeRate(): Promise<string> {
+    return this.contract.exchangeRateStored();
+  }
+
+  // TODO: DO I implement borrowrates / borrow balances stored here?
+
 }
