@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ComptrollerService } from '../services/comptroller.service';
 import { CTokenService } from '../services/ctoken.service';
 import comptrollerAbi from '../abis/Comptroller.json';
-import cTokenAbi from '../abis/CToken.json';
+import cTokenAbi from '../abis/CErc20Immutable.json';
 
 // Initialize ComptrollerService and CTokenService
 const comptrollerAddress = process.env.COMPTROLLER_ADDRESS!;
@@ -61,3 +61,8 @@ export const getAccountBalance = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+/**
+ * Get Borrow Capacity
+ */
