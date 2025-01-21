@@ -30,7 +30,7 @@ export const getAccountLiquidity = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch account liquidity',
-      details: err.message,
+      details: (err as Error).message,
     });
   }
 };
@@ -57,7 +57,7 @@ export const getAccountBalance = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch account balance',
-      details: err.message,
+      details: (err as Error).message,
     });
   }
 };
