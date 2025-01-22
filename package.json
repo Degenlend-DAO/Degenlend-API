@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "RPC_URL='https://rpc.toronto.sx.technology' ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
