@@ -13,6 +13,12 @@ const app: Application = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Default
+app.use('/', (req, res) => {
+    res.send('Welcome to the Degenlend API');
+    res.status(200);
+    });
+
 // Routes
 app.use('/api/market', marketRoutes);
 app.use('/api/account', accountRoutes);
