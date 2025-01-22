@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { CTokenService } from '../services/ctoken.service';
 import cTokenAbi from '../abis/CErc20Immutable.json';
+import { testnet_addresses } from '../utils/constants';
 
-const cTokenAddress = process.env.CTOKEN_ADDRESS!;
-const cTokenService = new CTokenService(cTokenAbi, cTokenAddress);
+const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses.degenWSX;
+const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
 
 export const mint = async (req: Request, res: Response) => {
   try {
