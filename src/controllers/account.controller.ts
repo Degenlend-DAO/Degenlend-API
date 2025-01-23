@@ -84,7 +84,12 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
       }
     })
   } catch (error) {
-    
+    console.error(`[ERROR] Failed to fetch supply balance: ${error}`);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch supply balance',
+      details: (error as Error).message
+    });
   }
 };
 
