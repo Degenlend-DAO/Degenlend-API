@@ -1,11 +1,10 @@
 import express from 'express';
-import { mint, redeem, borrow, repayBorrow } from '../controllers/market.controller';
+import usdcRoutes from './markets/usdc.routes';
+import wsxRoutes from './markets/wsx.routes';
 
 const router = express.Router();
 
-router.post('/mint', mint);
-router.post('/redeem', redeem);
-router.post('/borrow', borrow);
-router.post('/repay', repayBorrow);
+router.use('/usdc', usdcRoutes);
+router.use('/wsx', wsxRoutes);
 
 export default router;
