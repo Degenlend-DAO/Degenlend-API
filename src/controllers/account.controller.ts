@@ -33,6 +33,7 @@ export const getAccountLiquidity = async (req: Request, res: Response) => {
     console.error(`[ERROR] Failed to fetch account liquidity: ${err}`);
     res.status(500).json({
       success: false,
+      data: 0,
       error: 'Failed to fetch account liquidity',
       details: (err as Error).message,
     });
@@ -47,13 +48,13 @@ export const getAccountBalance = async (req: Request, res: Response) => {
     const { userAddress } = req.params;
 
     // Query user's cToken balance
-    const cTokenBalance = await cTokenService.getBalance(userAddress);
-
+    const cTokenBalance: BigInt = await cTokenService.getBalance(userAddress);
+    const accountBalance = Number(cTokenBalance);
     res.json({
       success: true,
       data: {
         userAddress,
-        cTokenBalance,
+        accountBalance,
       },
     });
   } catch (err) {
