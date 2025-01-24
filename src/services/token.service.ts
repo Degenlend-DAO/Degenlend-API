@@ -14,8 +14,8 @@ export class TokenService {
         this.address = address;
     }
 
-    async approve(amount: string): Promise<string> {
-        const tx = await this.contract.approve(amount);
+    async approve(spender: string, amount: string): Promise<string> {
+        const tx = await this.contract.approve(spender, amount);
         await tx.wait();
         return tx.hash;
     }
