@@ -14,13 +14,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Default
-app.use('/', (req, res) => {
+app.use('/api', (req, res) => {
     res.send('Welcome to the Degenlend API');
     res.status(200);
     });
 
 // Routes
-app.use('/api/market', marketRoutes);
+app.use('/api/markets', marketRoutes);
 app.use('/api/account', accountRoutes);
 
 export default app;
