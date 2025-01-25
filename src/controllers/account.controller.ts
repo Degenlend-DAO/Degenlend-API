@@ -13,6 +13,68 @@ const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses.degenWSX;
 const comptrollerService = new ComptrollerService(comptrollerAbi.abi, comptrollerAddress);
 const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
 
+
+// Metadata
+
+/**
+ * Get RPC URL
+ */
+export const getRPCUrl = async (req: Request, res: Response) => {
+
+  try {
+    res.json({
+      success: true,
+      data: {
+        rpcUrl: 'https://rpc.toronto.sx.technology/'
+      }
+    })
+  } catch (error) {
+
+  }
+
+}
+
+
+/**
+ * Get Network ID
+ */
+export const getNetworkId = async (req: Request, res: Response) => {
+  try {
+
+    res.json({
+      success: true,
+      data: {
+        networkId: 1
+      }
+    })
+  } catch (error) {
+
+  }
+}
+
+/**
+ * Get Chain ID
+ */
+export const getChainId = async (req: Request, res: Response) => {
+  try {
+
+    res.json({
+      success: true,
+      data: {
+        chainId: 1,
+      }
+    })
+
+  } catch (error) {
+    console.error(`[ERROR] Failed to fetch chain ID: ${error}`);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch chain ID',
+      details: (error as Error).message
+    })
+  }
+}
+
 /**
  * Get account liquidity (borrow capacity)
  */
@@ -76,7 +138,7 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
 
-    
+
     res.json({
       success: true,
       data: {
@@ -108,7 +170,7 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    
+
   }
 };
 
@@ -126,7 +188,7 @@ export const getBorrowLimit = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    
+
   }
 };
 
@@ -145,6 +207,6 @@ export const getNetApy = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    
+
   }
 };
