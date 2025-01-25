@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import marketRoutes from './routes/market.routes';
 import accountRoutes from './routes/account.routes';
 
@@ -10,14 +11,9 @@ dotenv.config();
 const app: Application = express();
 
 // Middleware
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Default
-app.use('/api', (req, res) => {
-    res.send('Welcome to the Degenlend API');
-    res.status(200);
-    });
 
 // Routes
 app.use('/api/markets', marketRoutes);
