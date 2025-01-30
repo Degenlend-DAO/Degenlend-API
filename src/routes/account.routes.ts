@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAccountLiquidity, getAccountBalance, getSupplyBalance, getBorrowBalance, getNetApy, getBorrowLimit, getChainId, getNetworkId, getRPCUrl } from '../controllers/account.controller';
+import { getAccountLiquidity, getAccountBalance, getSupplyBalance, getBorrowBalance, getNetApy, getBorrowLimit, getChainId, getNetworkId, getRPCUrl, enterMarket, exitMarket } from '../controllers/account.controller';
 
 const router = express.Router();
 
@@ -29,6 +29,13 @@ router.get('/apy/:userAddress', getNetApy);
 
 // Route to get borrow limit
 router.get('/borrowLimit/:userAddress', getBorrowLimit);
+
+
+// Route to enter a market
+router.post('/enterMarket', enterMarket);
+
+// Route to exit a market
+router.post('/exitMarket', exitMarket);
 
 
 export default router;

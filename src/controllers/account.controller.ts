@@ -210,3 +210,34 @@ export const getNetApy = async (req: Request, res: Response) => {
 
   }
 };
+
+export const enterMarket = async (req: Request, res: Response) => {
+  try {
+    const { markets } = req.body;
+    const txHash = await comptrollerService.enterMarkets(markets);
+    res.json({ success: true, data: { txHash } });
+  } catch (err) {
+    console.error(`[ERROR] Failed to enter market: ${err}`);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to enter market',
+      details: (err as Error).message,
+    });
+  }
+};
+
+export const exitMarket = async (req: Request, res: Response) => {
+  try {
+    const { market } = req.body;
+    const txHash = await comptrollerService.exitMarket(market);
+    await txHash.wait()
+    res.json({ success: true,  data: { txHash }  });
+  } catch (err) {
+    console.error(`[ERROR] Failed to exit market: ${err}`);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to exit market',
+      details: (err as Error).message,
+    });
+  }
+} 
