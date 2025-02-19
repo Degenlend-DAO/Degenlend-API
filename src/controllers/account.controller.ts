@@ -230,7 +230,6 @@ export const exitMarket = async (req: Request, res: Response) => {
   try {
     const { market } = req.body;
     const txHash = await comptrollerService.exitMarket(market);
-    await txHash.wait()
     res.json({ success: true,  data: { txHash }  });
   } catch (err) {
     console.error(`[ERROR] Failed to exit market: ${err}`);

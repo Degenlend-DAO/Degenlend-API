@@ -4,10 +4,13 @@ import { getSupplyAPY, getSupplyBalance, getBorrowBalance, getBorrowAPY, mint, b
 import express from 'express';
 const router = express.Router();
 
+// Views
 router.get('/supplyAPY', getSupplyAPY);
 router.get('/borrowAPY', getBorrowAPY);
 router.get('/supplyBalance/:userAddress', getSupplyBalance);
 router.get('/borrowBalance/:userAddress', getBorrowBalance);
+
+// Actions
 router.post('/approve', approve);
 router.post('/mint', mint);
 router.post('/borrow', borrow);
