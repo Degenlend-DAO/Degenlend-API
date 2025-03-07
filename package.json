@@ -2,7 +2,7 @@
   "name": "degenlend-api",
   "version": "1.0.0",
   "description": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "RPC_URL='https://rpc.toronto.sx.technology' ts-node src/server.ts",
