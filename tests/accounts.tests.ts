@@ -31,6 +31,7 @@ describe("Account Tests", () => {
         const response = await request(app).get("/api/account/network_id");
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("networkId");
+        
     });
 
     it("GET /api/account/chain_id should return 200", async () => {
