@@ -8,6 +8,8 @@ router.get('/supplyAPY', getSupplyAPY);
 router.get('/borrowAPY', getBorrowAPY);
 router.get('/supplyBalance/:userAddress', getSupplyBalance);
 router.get('/borrowBalance/:userAddress', getBorrowBalance);
+
+// Actions
 router.get('/approve', approve);
 router.post('/mint', mint);
 router.post('/borrow', borrow);
