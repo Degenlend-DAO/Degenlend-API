@@ -2,7 +2,6 @@ import "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../src/app";
-import router from "../src/routes/market.routes";
 
 const userAddress = '0x1234567890123456789012345678901234567890';
 
@@ -36,14 +35,5 @@ describe("Money Markets Tests", () => {
         const response = await request(app).get("/api/markets/wsx");
         expect(response.status).to.equal(404);
     });
-
-    // Diving deeper into individual routes
-
-    // USDC: 9 routes
-
-
-    // WSX: 9 routes
-
-    // Token activities
 
 });
