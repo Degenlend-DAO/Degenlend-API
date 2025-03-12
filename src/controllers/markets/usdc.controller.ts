@@ -17,9 +17,9 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenUSDC.getSupplyAPY();
-    res.json({ success: true, data: {
-      apy: 1
-    } });
+    res.json({ success: true, 
+      apy: apy
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get supply APY', details: (err as Error).message });
   }
@@ -28,9 +28,9 @@ export const getSupplyAPY = async (req: Request, res: Response) => {
 export const getBorrowAPY = async (req: Request, res: Response) => {
     try {
         const apy = await degenUSDC.getBorrowAPY();
-        res.json({ success: true, data: {
+        res.json({ success: true, 
           apy: 1
-        } });
+        });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow APY', details: err });
     }
@@ -40,9 +40,9 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
     try {
         const { userAddress } = req.params;
         const balance = await degenUSDC.getSupplyBalance(userAddress);
-        res.json({ success: true, data: {
+        res.json({ success: true, 
           supplyBalance: 1
-        } });
+        });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get supply balance', details: err });
     }
@@ -52,7 +52,7 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
     try {
         const { userAddress } = req.params;
         const balance = await degenUSDC.getBorrowBalance(userAddress);
-        res.json({ success: true, data: {borrowBalance: 1} });
+        res.json({ success: true, borrowBalance: 1 });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow balance', details: err });
     }

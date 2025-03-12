@@ -1,12 +1,13 @@
 import { ethers } from 'ethers';
 
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
 export class ComptrollerService {
   private contract: ethers.Contract;
 
   constructor(abi: any, address: string) {
-    this.contract = new ethers.Contract(address, abi, provider);
+    this.contract = new ethers.Contract(address, abi, signer);
   }
 
   async enterMarkets(markets: string[]): Promise<string> {

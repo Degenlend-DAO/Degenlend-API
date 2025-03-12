@@ -24,9 +24,7 @@ export const getRPCUrl = async (req: Request, res: Response) => {
   try {
     res.json({
       success: true,
-      data: {
         rpcUrl: 'https://rpc.toronto.sx.technology/'
-      }
     })
   } catch (error) {
 
@@ -43,9 +41,7 @@ export const getNetworkId = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: {
         networkId: 1
-      }
     })
   } catch (error) {
 
@@ -60,9 +56,7 @@ export const getChainId = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: {
         chainId: 1,
-      }
     })
 
   } catch (error) {
@@ -114,10 +108,8 @@ export const getAccountBalance = async (req: Request, res: Response) => {
     const accountBalance = Number(cTokenBalance);
     res.json({
       success: true,
-      data: {
-        userAddress,
-        accountBalance,
-      },
+      userAddress,
+      accountBalance,
     });
   } catch (err) {
     console.error(`[ERROR] Failed to fetch account balance: ${err}`);
@@ -141,10 +133,8 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: {
-        userAddress,
-        supplyBalance: 1
-      }
+      userAddress,
+      supplyBalance: 1
     })
   } catch (error) {
     console.error(`[ERROR] Failed to fetch supply balance: ${error}`);
@@ -164,10 +154,8 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
     const { userAddress } = req.params;
     res.json({
       success: true,
-      data: {
-        userAddress,
-        borrowBalance: 1
-      }
+      userAddress,
+      borrowBalance: 1
     });
   } catch (error) {
 
@@ -182,10 +170,8 @@ export const getBorrowLimit = async (req: Request, res: Response) => {
     const { userAddress } = req.params;
     res.json({
       success: true,
-      data: {
-        userAddress,
-        borrowLimit: 1
-      }
+      userAddress,
+      borrowLimit: 1
     });
   } catch (error) {
 
@@ -201,10 +187,8 @@ export const getNetApy = async (req: Request, res: Response) => {
     const { userAddress } = req.params;
     res.json({
       success: true,
-      data: {
-        userAddress,
-        netApy: 1
-      }
+      userAddress,
+      netApy: 1
     });
   } catch (error) {
 

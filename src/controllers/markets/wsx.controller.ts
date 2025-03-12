@@ -17,52 +17,55 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenWSX.getSupplyAPY();
-    res.json({ success: true, data: {
-      apy: 1
-    } });
+    res.json({
+      success: true,
+      apy: apy
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get supply APY', details: (err as Error).message });
   }
 }
 
 export const getBorrowAPY = async (req: Request, res: Response) => {
-    try {
-        const apy = await degenWSX.getBorrowAPY();
-        res.json({ success: true, data: {
-          apy: 1
-        } });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to get borrow APY', details: err });
-    }
+  try {
+    const apy = await degenWSX.getBorrowAPY();
+    res.json({
+      success: true,
+        apy: apy
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get borrow APY', details: err });
+  }
 }
 
 export const getSupplyBalance = async (req: Request, res: Response) => {
-    try {
-        const { userAddress } = req.params;
-        const balance = await degenWSX.getSupplyBalance(userAddress);
-        res.json({ success: true, data: {
-          supplyBalance: 1
-        } });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to get supply balance', details: err });
-    }
+  try {
+    const { userAddress } = req.params;
+    const balance = await degenWSX.getSupplyBalance(userAddress);
+    res.json({
+      success: true,
+      supplyBalance: balance
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get supply balance', details: err });
+  }
 }
 
 export const getBorrowBalance = async (req: Request, res: Response) => {
-    try {
-        const { userAddress } = req.params;
-        const balance = await degenWSX.getBorrowBalance(userAddress);
-        res.json({ success: true, data: {borrowBalance: 1} });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to get borrow balance', details: err });
-    }
+  try {
+    const { userAddress } = req.params;
+    const balance = await degenWSX.getBorrowBalance(userAddress);
+    res.json({ success: true,  borrowBalance: balance });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get borrow balance', details: err });
+  }
 }
 
 
 // Actions
 
 export const approve = async (req: Request, res: Response) => {
-  
+
   const { amount, spender } = req.body;
   try {
     const txHash = await wsx.approve(spender, amount);
@@ -98,7 +101,7 @@ export const borrow = async (req: Request, res: Response) => {
   try {
     const { amount } = req.body;
     const txHash = await degenWSX.borrow(amount);
-    res.json({ success: true, txHash});
+    res.json({ success: true, txHash });
   } catch (err) {
     res.status(500).json({ error: 'Borrow failed', details: err });
   }
@@ -106,10 +109,10 @@ export const borrow = async (req: Request, res: Response) => {
 
 export const repayBorrow = async (req: Request, res: Response) => {
   try {
-    const {amount } = req.body;
+    const { amount } = req.body;
     const txHash = await degenWSX.repayBorrow(amount);
-    res.json({ success: true, txHash});
-    } catch (err) {
-      res.status(500).json({ error: 'Repay failed', details: err });
-    }
-  };
+    res.json({ success: true, txHash });
+  } catch (err) {
+    res.status(500).json({ error: 'Repay failed', details: err });
+  }
+};
