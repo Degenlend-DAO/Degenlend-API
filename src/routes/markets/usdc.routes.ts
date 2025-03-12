@@ -10,7 +10,7 @@ router.get('/supplyBalance/:userAddress', getSupplyBalance);
 router.get('/borrowBalance/:userAddress', getBorrowBalance);
 
 // Actions
-router.get('/approve', approve);
+router.post('/approve', approve);
 router.post('/mint', mint);
 router.post('/borrow', borrow);
 router.post('/redeem', redeem);
