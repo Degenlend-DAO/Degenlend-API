@@ -2,9 +2,9 @@ import "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../src/app";
-import router from "../src/routes/market.routes";
 
-const userAddress = '0x1234567890123456789012345678901234567890';
+
+const userAddress = '0x4869aF0Aed0a9948f724f809dC0DCcF9885cCe34';
 
 describe("Account Tests", () => {
 
