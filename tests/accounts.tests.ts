@@ -1,4 +1,5 @@
 import "mocha";
+import { Done } from "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../src/app";
@@ -73,23 +74,26 @@ describe("Account Tests", () => {
         expect(response.body).to.have.property("apy");
     });
 
-    it("GET /api/account/borrowLimit/:userAddress should return 200", async () => {
+    it("GET /api/account/borrowLimit/:userAddress should return 200", async (done: Done) => {
         const response = await request(app).get(`/api/account/borrowLimit/${userAddress}`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("borrowLimit");
+        done();
     });
 
     //---------------------------- ACCOUNT ROUTES ACTIVITIES -----------------------//
 
-    it("POST /api/account/enterMarket should return 200", async () => {
+    it("POST /api/account/enterMarket should return 200", async (done: Done) => {
         const response = await request(app).post(`/api/account/enterMarket`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("message");
+        done();
     });
 
-    it("POST /api/account/exitMarket should return 200", async () => {
+    it("POST /api/account/exitMarket should return 200", async (done: Done) => {
         const response = await request(app).post(`/api/account/exitMarket`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("message");
+        done();
     });
 });

@@ -23,14 +23,17 @@ export class ComptrollerService {
   }
 
   async getAccountLiquidity(address: string) {
-    const [error, liquidity, shortfall] = await this.contract.getAccountLiquidity(address);
-    if (error.toNumber() !== 0) {
-      throw new Error(`Error fetching account liquidity: ${error}`);
+    const result = await this.contract.getAccountLiquidity(address);
+    const error = Number(result[0]);
+
+    if (error !== 0)
+    {
+      throw new Error(`Contract error code: ${error}`);
     }
 
     return {
-      liquidity: ethers.formatUnits(liquidity, 18),
-      shortfall: ethers.formatUnits(shortfall, 18),
+      liquidity: ethers.formatUnits(result[1], 18),
+      shortfall: ethers.formatUnits(result[2], 18),
     };
   }
 
