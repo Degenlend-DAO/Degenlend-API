@@ -6,13 +6,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "allowJs": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*", "src/types/*"]
     },
-    "outDir": "./dist"
+    "outDir": "./dist",
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "dist"]
