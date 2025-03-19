@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ethers } from 'ethers';
 import { ComptrollerService } from '../services/comptroller.service';
 import { CTokenService } from '../services/ctoken.service';
 import comptrollerAbi from '../abis/Comptroller.json';
@@ -13,6 +14,9 @@ const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses.degenWSX;
 const comptrollerService = new ComptrollerService(comptrollerAbi.abi, comptrollerAddress);
 const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
 
+
+// Account metadata
+const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 
 // Metadata
 
@@ -38,13 +42,16 @@ export const getRPCUrl = async (req: Request, res: Response) => {
  */
 export const getNetworkId = async (req: Request, res: Response) => {
   try {
-
     res.json({
       success: true,
-        networkId: 1
+        networkId: provider._network.name
     })
   } catch (error) {
-
+    res.status(500).json({
+      success: false,
+      error: 'failed to fetch network ID',
+      details: (error as Error).message
+    })
   }
 }
 
@@ -56,7 +63,7 @@ export const getChainId = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-        chainId: 1,
+        chainId: provider._network.chainId,
     })
 
   } catch (error) {
@@ -78,18 +85,18 @@ export const getAccountLiquidity = async (req: Request, res: Response) => {
 
     // Query account liquidity from Comptroller
     const liquidityDetails = await comptrollerService.getAccountLiquidity(userAddress);
-
-    const formattedLiquidity = parseFloat(formatUnits(liquidityDetails.liquidity, 18));
+    const castedLiquidity = Number(liquidityDetails.liquidity);
+    const formattedLiquidity = castedLiquidity.toString();
 
     res.json({
       success: true,
-      data: formattedLiquidity,
+      liquidity: formattedLiquidity,
     });
   } catch (err) {
     console.error(`[ERROR] Failed to fetch account liquidity: ${err}`);
     res.status(500).json({
       success: false,
-      data: 0,
+      liquidity: 0,
       error: 'Failed to fetch account liquidity',
       details: (err as Error).message,
     });
@@ -130,11 +137,12 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
 
+    let netSupplyBalance = 1;
 
     res.json({
       success: true,
       userAddress,
-      supplyBalance: 1
+      supplyBalance: netSupplyBalance
     })
   } catch (error) {
     console.error(`[ERROR] Failed to fetch supply balance: ${error}`);
@@ -152,13 +160,19 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
 export const getBorrowBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
+
+    let netBorrowBalance = 1;
     res.json({
       success: true,
       userAddress,
-      borrowBalance: 1
+      borrowBalance: netBorrowBalance
     });
   } catch (error) {
-
+    res.json({
+      success: false,
+      error: 'Failed to get borrow balance',
+      details: (error as Error).message
+    })
   }
 };
 
@@ -174,7 +188,11 @@ export const getBorrowLimit = async (req: Request, res: Response) => {
       borrowLimit: 1
     });
   } catch (error) {
-
+    res.json({
+      success: false,
+      error: 'Failed to get borrow limit',
+      details: (error as Error).message
+    });
   }
 };
 
@@ -191,14 +209,18 @@ export const getNetApy = async (req: Request, res: Response) => {
       netApy: 1
     });
   } catch (error) {
-
+    res.json({
+      success: false,
+      error: 'Failed to get net APY',
+      details: (error as Error).message
+    });
   }
 };
 
 export const enterMarket = async (req: Request, res: Response) => {
   try {
     const { markets } = req.body;
-    const txHash = await comptrollerService.enterMarkets(markets);
+    const txHash = await comptrollerService.enterMarkets(["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"]);
     res.json({ success: true, data: { txHash } });
   } catch (err) {
     console.error(`[ERROR] Failed to enter market: ${err}`);

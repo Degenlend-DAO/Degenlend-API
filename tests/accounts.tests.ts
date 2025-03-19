@@ -28,11 +28,10 @@ describe("Account Tests", () => {
     });
 
     // Test network id
-    it("GET /api/account/network_id should return 200", async () => {
+    it("GET /api/account/network_id should return 200", async (done: Done) => {
         const response = await request(app).get("/api/account/network_id");
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("networkId");
-        
     });
 
     it("GET /api/account/chain_id should return 200", async () => {
@@ -50,35 +49,36 @@ describe("Account Tests", () => {
         expect(response.body).to.have.property("liquidity");
     });
 
-    it("GET /api/account/balance/:userAddress should return 200", async () => {
-        const response = await request(app).get(`/api/account/balance/${userAddress}`);
-        expect(response.status).to.equal(200);
-        expect(response.body).to.have.property("balance");
+    it("GET /api/account/balance/:userAddress should return 200", async (done: Done) => {
+            const response = await request(app).get(`/api/account/balance/${userAddress}`);
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property("balance");
     });
 
-    it("GET /api/account/supplyBalance/:userAddress should return 200", async () => {
+    it("GET /api/account/supplyBalance/:userAddress should return 200", async (done: Done) => {
+
         const response = await request(app).get(`/api/account/supplyBalance/${userAddress}`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("supplyBalance");
     });
 
-    it("GET /api/account/borrowBalance/:userAddress should return 200", async () => {
+    it("GET /api/account/borrowBalance/:userAddress should return 200", async (done: Done) => {
+
         const response = await request(app).get(`/api/account/borrowBalance/${userAddress}`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("borrowBalance");
     });
 
-    it("GET /api/account/apy/:userAddress should return 200", async () => {
+    it("GET /api/account/apy/:userAddress should return 200", async (done: Done) => {
         const response = await request(app).get(`/api/account/apy/${userAddress}`);
-        expect(response.status).to.equal(200);
-        expect(response.body).to.have.property("apy");
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property("apy");
     });
 
     it("GET /api/account/borrowLimit/:userAddress should return 200", async (done: Done) => {
         const response = await request(app).get(`/api/account/borrowLimit/${userAddress}`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("borrowLimit");
-        done();
     });
 
     //---------------------------- ACCOUNT ROUTES ACTIVITIES -----------------------//
@@ -87,13 +87,11 @@ describe("Account Tests", () => {
         const response = await request(app).post(`/api/account/enterMarket`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("message");
-        done();
     });
 
     it("POST /api/account/exitMarket should return 200", async (done: Done) => {
         const response = await request(app).post(`/api/account/exitMarket`);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property("message");
-        done();
     });
 });

@@ -14,6 +14,36 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 
 // Views
 
+export const isUSDCListedAsCollateral = async (req: Request, res: Response) => {
+  const { walletAddress } = req.params;
+  let isCollateral = false;
+  try {
+    const collateralMarkets = await comptroller.getAssetsIn(walletAddress);
+
+    if (collateralMarkets.includes(usdcAddress))
+    {
+      isCollateral = true;
+    }
+
+    return isCollateral;
+  } catch (err) {
+    res.status(500).json({
+      error: 'Failed to check if USDC is collateral',
+      details: (err as Error).message
+    })
+  }
+}
+
+export const isUSDCEnabled = async (req: Request, res: Response) => {
+  const { walletAddress } = req.params;
+
+  try {
+
+  } catch (err) {
+    
+  }
+}
+
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenUSDC.getSupplyAPY();
@@ -41,7 +71,7 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
         const { userAddress } = req.params;
         const balance = await degenUSDC.getSupplyBalance(userAddress);
         res.json({ success: true, 
-          supplyBalance: 1
+          supplyBalance: balance
         });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get supply balance', details: err });
@@ -52,7 +82,7 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
     try {
         const { userAddress } = req.params;
         const balance = await degenUSDC.getBorrowBalance(userAddress);
-        res.json({ success: true, borrowBalance: 1 });
+        res.json({ success: true, borrowBalance: balance });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow balance', details: err });
     }
@@ -93,7 +123,6 @@ export const redeem = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Redeem failed', details: err });
   }
 };
-
 
 export const borrow = async (req: Request, res: Response) => {
   try {
