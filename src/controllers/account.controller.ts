@@ -26,7 +26,7 @@ const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 export const getRPCUrl = async (req: Request, res: Response) => {
 
   try {
-    res.json({
+    res.status(200).json({
       success: true,
         rpcUrl: 'https://rpc.toronto.sx.technology/'
     })
@@ -42,7 +42,7 @@ export const getRPCUrl = async (req: Request, res: Response) => {
  */
 export const getNetworkId = async (req: Request, res: Response) => {
   try {
-    res.json({
+    res.status(200).json({
       success: true,
         networkId: provider._network.name
     })
