@@ -47,7 +47,7 @@ export const isUSDCEnabled = async (req: Request, res: Response) => {
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenUSDC.getSupplyAPY();
-    res.json({ success: true, 
+    res.status(200).json({ success: true, 
       apy: apy
     });
   } catch (err) {
