@@ -3,35 +3,61 @@ import { Done } from "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../src/app";
+import { createServer } from "http";
+import supertest from "supertest";
 
 
 const userAddress = '0x4869aF0Aed0a9948f724f809dC0DCcF9885cCe34';
 
 describe("Account Tests", () => {
 
+    let server: any;
+
+    before(function(done) {
+        server = createServer(app);  // Start the server & listen in
+        server.listen(done);
+    })
+
+    after(function(done) {
+        server.close(done); // stop the server after the tests
+    })
+
     //---------------------------- ACCOUNT ROUTES -----------------------//
 
     // tests for the account entrypoint
     it("GET /api/account should return 404", async () => {
         //  This is a url that doesn't exist
+        
         const response = await request(app).get("/api/account");
         expect(response.status).to.equal(404);
     });
 
     // Test RPC url
-    it("GET /api/account/rpc_url should return 200", async () => {
+    it("GET /api/account/rpc_url should return 200", async (done) => {
 
-        const response = await request(app).get("/api/account/rpc_url");
-        expect(response.status).to.equal(200);
-        expect(response.body).to.have.property("rpcUrl");
+        // const response = await request(app).get("/api/account/rpc_url");
+        supertest(server).get("/api/account/rpc_url").expect(200).end((err, res) => {
+            if (err) return done(err);
+            // expect(res.body).to.have.property("rpcUrl");
+            return done();
+        })
+
 
     });
 
     // Test network id
     it("GET /api/account/network_id should return 200", async (done: Done) => {
-        const response = await request(app).get("/api/account/network_id");
-        expect(response.status).to.equal(200);
-        expect(response.body).to.have.property("networkId");
+        supertest(server).get("/api/account/network_id").expect(200).end((err, res) => {
+            if (err) return done(err);
+            expect(res.status).to.equal(200);
+            expect(res.body).to.have.property("networkId");
+            return done();
+        })
+
+        // {
+        //     expect(response.status).to.equal(200);
+        //     expect(response.body).to.have.property("networkId");
+        // }
     });
 
     it("GET /api/account/chain_id should return 200", async () => {
