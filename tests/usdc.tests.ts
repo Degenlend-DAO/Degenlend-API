@@ -20,9 +20,9 @@ describe("USDC Money Markets Tests", () => {
     });
 
     it("GET /api/markets/usdc should return 404", async (done) => {
-        supertest(server).get("/api/markets/usdc").expect(404).end((err, res) => {
-            if (err) return done(err);
+        supertest(server).get("/api/markets/usdc").end((err, res) => {
             expect(res.status).to.equal(404);
+            if (err) return done(err);
         });
     });
 
@@ -30,8 +30,9 @@ describe("USDC Money Markets Tests", () => {
 
     it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async (done) => {
         supertest(server).get("/api/markets/usdc/supplyAPY").expect(200).end((err, res) => {
-            // expect(res.body).to.have.property("success", true);
+            expect(res.status).to.equal(200);
             expect(res.body.data).to.have.property("apy");
+            expect(res.body).to.have.property("success", true);
         });
 
     });
@@ -69,7 +70,6 @@ describe("USDC Money Markets Tests", () => {
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
-                done();
             });
 
     });
