@@ -31,7 +31,7 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
     const apy = await degenWSX.getBorrowAPY();
     res.json({
       success: true,
-        apy: apy
+      apy: apy
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get borrow APY', details: err });
@@ -55,7 +55,7 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
     const balance = await degenWSX.getBorrowBalance(userAddress);
-    res.json({ success: true,  borrowBalance: balance });
+    res.json({ success: true, borrowBalance: balance });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get borrow balance', details: err });
   }
