@@ -53,10 +53,6 @@ describe("Account Tests", () => {
             expect(res.body).to.have.property("networkId");
         })
 
-        // {
-        //     expect(res.status).to.equal(200);
-        //     expect(res.body).to.have.property("networkId");
-        // }
     });
 
     it("GET /api/account/chain_id should return 200", async () => {
@@ -80,7 +76,7 @@ describe("Account Tests", () => {
 
     });
 
-    it("GET /api/account/balance/:userAddress should return 200", async (done: Done) => {
+    it("GET /api/account/balance/:userAddress should return 200", async () => {
 
             supertest(server).get(`/api/account/balance/${userAddress}`).end((err, res) => {
                 expect(res.status).to.equal(200);
@@ -88,7 +84,7 @@ describe("Account Tests", () => {
             })
     });
 
-    it("GET /api/account/supplyBalance/:userAddress should return 200", async (done: Done) => {
+    it("GET /api/account/supplyBalance/:userAddress should return 200", async () => {
 
         supertest(server).get(`/api/account/supplyBalance/${userAddress}`).end((err, res) => {
             expect(res.status).to.equal(200);
@@ -96,7 +92,7 @@ describe("Account Tests", () => {
         })
     });
 
-    it("GET /api/account/borrowBalance/:userAddress should return 200", async (done: Done) => {
+    it("GET /api/account/borrowBalance/:userAddress should return 200", async () => {
 
         supertest(server).get(`/api/account/borrowBalance/${userAddress}`).end((err, res) => {
             expect(res.status).to.equal(200);
@@ -105,7 +101,7 @@ describe("Account Tests", () => {
         
     });
 
-    it("GET /api/account/apy/:userAddress should return 200", async (done: Done) => {
+    it("GET /api/account/apy/:userAddress should return 200", async () => {
 
         supertest(server).get(`/api/account/apy/${userAddress}`).end((err, res) =>{
             expect(res.status).to.equal(200);
@@ -125,7 +121,7 @@ describe("Account Tests", () => {
 
     //---------------------------- ACCOUNT ROUTES ACTIVITIES -----------------------//
 
-    it("POST /api/account/enterMarket should return 200", async (done: Done) => {
+    it("POST /api/account/enterMarket should return 200", async () => {
 
         supertest(server).post(`/api/account/enterMarket`).end((err, res) =>{
             expect(res.status).to.equal(200);
@@ -134,7 +130,7 @@ describe("Account Tests", () => {
 
     });
 
-    it("POST /api/account/exitMarket should return 200", async (done: Done) => {
+    it("POST /api/account/exitMarket should return 200", async () => {
 
         supertest(server).post(`/api/account/exitMarket`).end((err, res) => {
             expect(res.status).to.equal(200);
