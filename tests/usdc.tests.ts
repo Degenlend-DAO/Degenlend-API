@@ -12,7 +12,7 @@ describe("USDC Money Markets Tests", () => {
 
     before(function(done) {
         server = createServer(app);
-        server.listen(done);
+        server.listen(0, done);
     })
 
     after(function (done) {
@@ -31,7 +31,7 @@ describe("USDC Money Markets Tests", () => {
     it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async (done) => {
         supertest(server).get("/api/markets/usdc/supplyAPY").expect(200).end((err, res) => {
             expect(res.status).to.equal(200);
-            expect(res.body.data).to.have.property("apy");
+            expect(res.body).to.have.property("apy");
             expect(res.body).to.have.property("success", true);
         });
 
@@ -41,7 +41,7 @@ describe("USDC Money Markets Tests", () => {
         supertest(server).get("/api/markets/usdc/borrowAPY").expect(200).end((err, res) => {
             if (err) return done(err);
             expect(res.body).to.have.property("success", true);
-            expect(res.body.data).to.have.property("apy");
+            expect(res.body).to.have.property("apy");
         });
     });
 
@@ -49,7 +49,7 @@ describe("USDC Money Markets Tests", () => {
         supertest(server).get(`/api/markets/usdc/supplyBalance/${userAddress}`).expect(200).end((err, res) => {
             if (err) return done(err);
             expect(res.body).to.have.property("success", true);
-            expect(res.body.data).to.have.property("supplyBalance");
+            expect(res.body).to.have.property("supplyBalance");
         });
     });
 
@@ -57,7 +57,7 @@ describe("USDC Money Markets Tests", () => {
         supertest(server).get(`/api/markets/usdc/borrowBalance/${userAddress}`).expect(200).end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("success", true);
-            expect(res.body.data).to.have.property("borrowBalance");
+            expect(res.body).to.have.property("borrowBalance");
             if (err) return done(err);
         })
     });

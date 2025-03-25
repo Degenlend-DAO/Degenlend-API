@@ -34,22 +34,13 @@ export const isUSDCListedAsCollateral = async (req: Request, res: Response) => {
   }
 }
 
-export const isUSDCEnabled = async (req: Request, res: Response) => {
-  const { walletAddress } = req.params;
-
-  try {
-
-  } catch (err) {
-    
-  }
-}
 
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenUSDC.getSupplyAPY();
     res.status(200).json({
       success: true, 
-      apy: apy
+      apy: apy.toString()
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get supply APY', details: (err as Error).message });
@@ -61,7 +52,7 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
         const apy = await degenUSDC.getBorrowAPY();
         res.json({
           success: true, 
-          apy: apy
+          apy: apy.toString()
         });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow APY', details: err });
