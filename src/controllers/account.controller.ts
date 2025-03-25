@@ -46,16 +46,17 @@ export const getRPCUrl = async (req: Request, res: Response) => {
  */
 export const getNetworkId = async (req: Request, res: Response) => {
   try {
+    const network = await provider.getNetwork();
     res.json({
       success: true,
-        networkId: provider._network.name
-    })
+      networkId: network.name
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
       error: 'failed to fetch network ID',
       details: (error as Error).message
-    })
+    });
   }
 }
 
@@ -64,19 +65,18 @@ export const getNetworkId = async (req: Request, res: Response) => {
  */
 export const getChainId = async (req: Request, res: Response) => {
   try {
-
+    const network = await provider.getNetwork();
     res.json({
       success: true,
-        chainId: provider._network.chainId,
-    })
-
+      chainId: network.chainId.toString(),
+    });
   } catch (error) {
     console.error(`[ERROR] Failed to fetch chain ID: ${error}`);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch chain ID',
       details: (error as Error).message
-    })
+    });
   }
 }
 
@@ -86,21 +86,16 @@ export const getChainId = async (req: Request, res: Response) => {
 export const getAccountLiquidity = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-
-    // Query account liquidity from Comptroller
     const liquidityDetails = await comptrollerService.getAccountLiquidity(userAddress);
-    const castedLiquidity = Number(liquidityDetails.liquidity);
-    const formattedLiquidity = castedLiquidity.toString();
-
     res.json({
       success: true,
-      liquidity: formattedLiquidity,
+      liquidity: liquidityDetails.liquidity.toString() // Convert to string
     });
   } catch (err) {
     console.error(`[ERROR] Failed to fetch account liquidity: ${err}`);
     res.status(500).json({
       success: false,
-      liquidity: 0,
+      liquidity: "0",
       error: 'Failed to fetch account liquidity',
       details: (err as Error).message,
     });
@@ -113,21 +108,18 @@ export const getAccountLiquidity = async (req: Request, res: Response) => {
 export const getAccountBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-
-    // Query user's cToken balance
     const cTokenBalance: BigInt = await cTokenService.getBalance(userAddress);
-    const accountBalance = Number(cTokenBalance);
     res.json({
       success: true,
       userAddress,
-      accountBalance,
+      balance: cTokenBalance.toString() // Changed property name and converted to string
     });
   } catch (err) {
     console.error(`[ERROR] Failed to fetch account balance: ${err}`);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch account balance',
-      details: (err as Error).message,
+      details: (err as Error).message
     });
   }
 };
@@ -224,7 +216,7 @@ export const getNetApy = async (req: Request, res: Response) => {
 export const enterMarket = async (req: Request, res: Response) => {
   try {
     const { markets } = req.body;
-    const txHash = await comptrollerService.enterMarkets(["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"]);
+    const txHash = await comptrollerService.enterMarkets(markets);
     res.json({ success: true, data: { txHash } });
   } catch (err) {
     console.error(`[ERROR] Failed to enter market: ${err}`);
@@ -239,6 +231,13 @@ export const enterMarket = async (req: Request, res: Response) => {
 export const exitMarket = async (req: Request, res: Response) => {
   try {
     const { market } = req.body;
+    let parsedMarket = String(market);
+    if (!parsedMarket || !ethers.isAddress(parsedMarket)) {
+       res.status(400).json({
+        success: false,
+        error: 'Invalid market address'
+      });
+    }
     const txHash = await comptrollerService.exitMarket(market);
     res.json({ success: true,  data: { txHash }  });
   } catch (err) {

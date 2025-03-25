@@ -12,10 +12,12 @@ const userAddress = '0x4869aF0Aed0a9948f724f809dC0DCcF9885cCe34';
 describe("Account Tests", () => {
 
     let server: any;
+    let enterMarketAddresses: String[] = ["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"];
+    let exitMarketAddress: String = '0x05d225eA760bc4E974b0691bFb0Cf026A7D33279';
 
     before(function(done) {
         server = createServer(app);  // Start the server & listen in
-        server.listen(done);
+        server.listen(0, done);
     })
 
     after(function(done) {
@@ -105,7 +107,7 @@ describe("Account Tests", () => {
 
         supertest(server).get(`/api/account/apy/${userAddress}`).end((err, res) =>{
             expect(res.status).to.equal(200);
-            expect(res.body).to.have.property("apy");
+            expect(res.body).to.have.property("netApy");
         });
 
     });
@@ -121,20 +123,28 @@ describe("Account Tests", () => {
 
     //---------------------------- ACCOUNT ROUTES ACTIVITIES -----------------------//
 
-    it("POST /api/account/enterMarket should return 200", async () => {
+    it("POST /api/account/enterMarket should return 200", async (done) => {
 
-        supertest(server).post(`/api/account/enterMarket`).end((err, res) =>{
+        supertest(server)
+        .post(`/api/account/enterMarket`)
+        .send({ markets: enterMarketAddresses})
+        .end((err, res) =>{
             expect(res.status).to.equal(200);
-            expect(res.body).to.have.property("message");
+            expect(res.body).to.have.property("data");
+            done();
         });
 
     });
 
-    it("POST /api/account/exitMarket should return 200", async () => {
+    it("POST /api/account/exitMarket should return 200", async (done) => {
 
-        supertest(server).post(`/api/account/exitMarket`).end((err, res) => {
+        supertest(server)
+        .post(`/api/account/exitMarket`)
+        .send({ market: exitMarketAddress})
+        .end((err, res) => {
             expect(res.status).to.equal(200);
-            expect(res.body).to.have.property("message");
+            expect(res.body).to.have.property("data");
+            done();
         });
 
     });
