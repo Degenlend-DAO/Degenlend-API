@@ -7,8 +7,9 @@ import { testnet_addresses } from '../../utils/constants';
 import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 
-const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.degenUSDC;
-const degenUSDC = new CTokenService(cTokenAbi.abi, usdcAddress);
+const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.USDC;
+const degenUSDCAddress = testnet_addresses.degenUSDC;
+const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
 const usdc = new TokenService(tokenAbi.abi, usdcAddress);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 

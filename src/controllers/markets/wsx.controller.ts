@@ -7,8 +7,9 @@ import { testnet_addresses } from '../../utils/constants';
 import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 
-const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.degenWSX;
-const degenWSX = new CTokenService(cTokenAbi.abi, wsxAddress);
+const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
+const degenWSXAddress = testnet_addresses.degenWSX;
+const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 const wsx = new TokenService(tokenAbi.abi, wsxAddress);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 
