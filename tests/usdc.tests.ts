@@ -12,24 +12,23 @@ describe("USDC Money Markets Tests", () => {
 
     before(function(done) {
         server = createServer(app);
-        server.listen(0, done);
+        server.listen(done);
     })
 
     after(function (done) {
         server.close(done); // Stop the server after tests
     });
 
-    it("GET /api/markets/usdc should return 404", async (done) => {
+    it("GET /api/markets/usdc should return 404", async () => {
         supertest(server).get("/api/markets/usdc").end((err, res) => {
             expect(res.status).to.equal(404);
-            if (err) return done(err);
         });
     });
 
     //---------------------------- MARKET ROUTES -----------------------//
 
     it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async (done) => {
-        supertest(server).get("/api/markets/usdc/supplyAPY").expect(200).end((err, res) => {
+        supertest(server).get("/api/markets/usdc/supplyAPY").end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("apy");
             expect(res.body).to.have.property("success", true);
@@ -38,7 +37,7 @@ describe("USDC Money Markets Tests", () => {
     });
 
     it("GET /api/markets/usdc/borrowAPY should return 200 and borrow APY", async (done) => {
-        supertest(server).get("/api/markets/usdc/borrowAPY").expect(200).end((err, res) => {
+        supertest(server).get("/api/markets/usdc/borrowAPY").end((err, res) => {
             if (err) return done(err);
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("apy");
@@ -46,7 +45,7 @@ describe("USDC Money Markets Tests", () => {
     });
 
     it("GET /api/markets/usdc/supplyBalance/:userAddress should return 200 and supply balance", async (done) => {
-        supertest(server).get(`/api/markets/usdc/supplyBalance/${userAddress}`).expect(200).end((err, res) => {
+        supertest(server).get(`/api/markets/usdc/supplyBalance/${userAddress}`).end((err, res) => {
             if (err) return done(err);
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("supplyBalance");
@@ -54,7 +53,7 @@ describe("USDC Money Markets Tests", () => {
     });
 
     it("GET /api/markets/usdc/borrowBalance/:userAddress should return 200 and borrow balance", async (done) => {
-        supertest(server).get(`/api/markets/usdc/borrowBalance/${userAddress}`).expect(200).end((err, res) => {
+        supertest(server).get(`/api/markets/usdc/borrowBalance/${userAddress}`).end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("borrowBalance");

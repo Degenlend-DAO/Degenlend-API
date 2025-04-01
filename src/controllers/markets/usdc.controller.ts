@@ -15,25 +15,6 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 
 // Views
 
-export const isUSDCListedAsCollateral = async (req: Request, res: Response) => {
-  const { walletAddress } = req.params;
-  let isCollateral = false;
-  try {
-    const collateralMarkets = await comptroller.getAssetsIn(walletAddress);
-
-    if (collateralMarkets.includes(usdcAddress))
-    {
-      isCollateral = true;
-    }
-
-    return isCollateral;
-  } catch (err) {
-    res.status(500).json({
-      error: 'Failed to check if USDC is collateral',
-      details: (err as Error).message
-    })
-  }
-}
 
 
 export const getSupplyAPY = async (req: Request, res: Response) => {
@@ -41,7 +22,7 @@ export const getSupplyAPY = async (req: Request, res: Response) => {
     const apy = await degenUSDC.getSupplyAPY();
     res.status(200).json({
       success: true, 
-      apy: apy.toString()
+      apy: apy
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get supply APY', details: (err as Error).message });
@@ -53,7 +34,7 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
         const apy = await degenUSDC.getBorrowAPY();
         res.json({
           success: true, 
-          apy: apy.toString()
+          apy: apy
         });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow APY', details: err });
