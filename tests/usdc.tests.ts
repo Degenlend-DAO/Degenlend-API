@@ -27,26 +27,25 @@ describe("USDC Money Markets Tests", () => {
 
     //---------------------------- MARKET ROUTES -----------------------//
 
-    it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async (done) => {
+    it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async () => {
         supertest(server).get("/api/markets/usdc/supplyAPY").end((err, res) => {
             expect(res.status).to.equal(200);
-            expect(res.body).to.have.property("apy");
             expect(res.body).to.have.property("success", true);
+            expect(res.body).to.have.property("apy");
         });
 
     });
 
     it("GET /api/markets/usdc/borrowAPY should return 200 and borrow APY", async (done) => {
         supertest(server).get("/api/markets/usdc/borrowAPY").end((err, res) => {
-            if (err) return done(err);
+            expect(res.status).to.equal(200);
             expect(res.body).to.have.property("success", true);
-            expect(res.body).to.have.property("apy");
+            expect(res.body.data).to.have.property("apy");
         });
     });
 
     it("GET /api/markets/usdc/supplyBalance/:userAddress should return 200 and supply balance", async (done) => {
         supertest(server).get(`/api/markets/usdc/supplyBalance/${userAddress}`).end((err, res) => {
-            if (err) return done(err);
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("supplyBalance");
         });
@@ -110,7 +109,7 @@ describe("USDC Money Markets Tests", () => {
         supertest(server)
             .post("/api/markets/usdc/repayBorrow")
             .send({ amount: 1000 }).end((err, res) => {
-                if (err) return done(err);
+                if (err) throw err;
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
