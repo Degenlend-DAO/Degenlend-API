@@ -49,7 +49,7 @@ export const getNetworkId = async (req: Request, res: Response) => {
     const network = await provider.getNetwork();
     res.json({
       success: true,
-      networkId: network.name
+      networkId: network.chainId.toString()
     });
   } catch (error) {
     res.status(500).json({
