@@ -33,7 +33,6 @@ describe("WSX Money Markets Tests", () => {
             expect(res.body).to.have.property("success", true);
             expect(res.body.data).to.have.property("apy");
         });
-
     });
 
     it("GET /api/markets/wsx/borrowAPY should return 200 and borrow APY", async () => {
@@ -104,6 +103,7 @@ describe("WSX Money Markets Tests", () => {
         supertest(server)
             .post("/api/markets/wsx/repayBorrow")
             .send({ amount: 1000 }).end((err, res) => {
+                if (err) throw err;
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");

@@ -97,7 +97,6 @@ export const redeem = async (req: Request, res: Response) => {
   }
 };
 
-
 export const borrow = async (req: Request, res: Response) => {
   try {
     const { amount } = req.body;
