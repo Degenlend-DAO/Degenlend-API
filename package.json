@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "PORT='3000' RPC_URL='https://rpc.toronto.sx.technology' tsc && node dist/server.js",
+    "start": "PORT='3000' RPC_URL='https://rpc.toronto.sx.technology' tsc && node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "test": "PRIVATE_KEY='$PRIVATE_KEY' RPC_URL='https://rpc.toronto.sx.technology' tsc && mocha dist/tests/**/*.js"
