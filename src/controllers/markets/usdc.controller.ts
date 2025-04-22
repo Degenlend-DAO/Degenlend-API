@@ -22,7 +22,7 @@ export const getSupplyAPY = async (req: Request, res: Response) => {
     const apy = await degenUSDC.getSupplyAPY();
     res.status(200).json({
       success: true, 
-      apy: apy
+      apy: apy.toString()
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get supply APY', details: (err as Error).message });
