@@ -54,17 +54,33 @@ export class CTokenService {
   }
 
   // Get supply APY
-  async getSupplyAPY(): Promise<number> {
-    const supplyRatePerBlock = await this.contract.supplyRatePerBlock();
-    const blocksPerYear = 2102400; // ~13.3 seconds per block
-    return (supplyRatePerBlock / 1e18) * blocksPerYear * 100; // Convert to percentage
+  async getSupplyAPY(): Promise<string> {
+    try {
+      const supplyRatePerBlock:BigInt = await this.contract.supplyRatePerBlock();
+      const blocksPerYear = 2102400n; // ~13.3 seconds per block
+      // Forcefully cast supplyrateperblock to bigInt (it already should be a BigInt, this is a failsafe)
+      const rate = BigInt(supplyRatePerBlock.toString());
+      
+      const scaledRate = (rate * blocksPerYear) / BigInt(1e16); // Convert to percentage
+      return scaledRate.toString();
+    } catch (error) {
+      throw new Error(`Failed to get supply APY: ${error}`);
+    }
   }
 
   // Get borrow APY
-  async getBorrowAPY(): Promise<number> {
-    const borrowRatePerBlock = await this.contract.borrowRatePerBlock();
-    const blocksPerYear = 2102400; // ~13.3 seconds per block
-    return (borrowRatePerBlock / 1e18) * blocksPerYear * 100; // Convert to percentage
+  async getBorrowAPY(): Promise<string> {
+    try {
+      const borrowRatePerBlock:BigInt = await this.contract.borrowRatePerBlock();
+      const blocksPerYear = 2102400n; // ~13.3 seconds per block
+      // Forcefully cast supplyrateperblock to bigInt (it already should be a BigInt, this is a failsafe)
+      const rate = BigInt(borrowRatePerBlock.toString());
+
+      const scaledRate = (rate * blocksPerYear) / BigInt(1e16); // Convert to percentage
+      return scaledRate.toString();
+    } catch (error) {
+      throw new Error(`Failed to get supply APY: ${error}`);
+    }
   }
 
   // Get supply and borrow balances for a user

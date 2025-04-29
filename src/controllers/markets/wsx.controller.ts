@@ -29,10 +29,10 @@ export const getSupplyAPY = async (req: Request, res: Response) => {
 
 export const getBorrowAPY = async (req: Request, res: Response) => {
   try {
-    const apy:number = await degenWSX.getBorrowAPY();
+    const apy = await degenWSX.getBorrowAPY();
     res.json({
       success: true,
-      apy: apy.toString()
+      apy: apy
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get borrow APY', details: err });
