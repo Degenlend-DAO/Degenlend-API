@@ -6,3 +6,5 @@ export const testnet_addresses = {
     "degenUSDC": '0x05d225eA760bc4E974b0691bFb0Cf026A7D33279', // old: 0xc3eAff959EB22aea6581D7bf52d4d44BdbbDCcD1
     "degenWSX": '0xD2F6594c692985850F85fd1b08d1F9DE0f719Cb5',  // old: 0xf547a2FE994E2207d4d7F13e69B0b2C0aC24cc2f
   }
+
+export const DEGEN_TOKEN_DECIMALS = 8;
