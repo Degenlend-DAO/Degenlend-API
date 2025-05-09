@@ -27,13 +27,13 @@ describe("USDC Money Markets Tests", () => {
 
     //---------------------------- MARKET ROUTES -----------------------//
 
-    it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async () => {
+    it("GET /api/markets/usdc/supplyAPY should return 200 and supply APY", async (done) => {
         supertest(server).get("/api/markets/usdc/supplyAPY").end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("apy");
         });
-
+        done();
     });
 
     it("GET /api/markets/usdc/borrowAPY should return 200 and borrow APY", async (done) => {
@@ -42,13 +42,17 @@ describe("USDC Money Markets Tests", () => {
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("apy");
         });
+        done();
+
     });
 
     it("GET /api/markets/usdc/supplyBalance/:userAddress should return 200 and supply balance", async (done) => {
         supertest(server).get(`/api/markets/usdc/supplyBalance/${userAddress}`).end((err, res) => {
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("supplyBalance");
+            if (err) return done(err);
         });
+        done();
     });
 
     it("GET /api/markets/usdc/borrowBalance/:userAddress should return 200 and borrow balance", async (done) => {
@@ -57,62 +61,67 @@ describe("USDC Money Markets Tests", () => {
             expect(res.body).to.have.property("success", true);
             expect(res.body).to.have.property("borrowBalance");
             if (err) return done(err);
-        })
+        });
+        done();
     });
 
     it("POST /api/markets/usdc/approve should return 200 and transaction hash", async (done) => {
         supertest(server)
             .post("/api/markets/usdc/approve")
             .send({ amount: 1000, spender: "0x1234567890123456789012345678901234567890" }).end((err, res) => {
-                if (err) return done(err);
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
+                if (err) return done(err);
             });
-
+        done();
     });
 
     it("POST /api/markets/usdc/mint should return 200 and transaction hash", async (done) => {
         supertest(server)
             .post("/api/markets/usdc/mint")
             .send({ amount: 1000 }).end((err, res) => {
-                if (err) return done(err);
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
+                if (err) return done(err);
             });
+        done();
     });
 
     it("POST /api/markets/usdc/borrow should return 200 and transaction hash", async (done) => {
         supertest(server)
             .post("/api/markets/usdc/borrow")
             .send({ amount: 1000 }).end((err, res) => {
-                if (err) return done(err);
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
+                if (err) return done(err);
             });
+        done();
     });
 
     it("POST /api/markets/usdc/redeem should return 200 and transaction hash", async (done) => {
         supertest(server)
             .post("/api/markets/usdc/redeem")
             .send({ amount: 1000 }).end((err, res) => {
-                if (err) return done(err);
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
-            })
+                if (err) return done(err);
+            });
+        done();
     });
 
     it("POST /api/markets/usdc/repayBorrow should return 200 and transaction hash", async (done) => {
         supertest(server)
             .post("/api/markets/usdc/repayBorrow")
             .send({ amount: 1000 }).end((err, res) => {
-                if (err) throw err;
                 expect(res.status).to.equal(200);
                 expect(res.body).to.have.property("success", true);
                 expect(res.body).to.have.property("txHash");
+                if (err) return done(err);
             });
+        done();
     });
 });

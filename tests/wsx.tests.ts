@@ -59,6 +59,10 @@ describe("WSX Money Markets Tests", () => {
         });
     });
 
+    
+    //---------------------------- ACCOUNT ROUTES ACTIVITIES -----------------------//
+
+
     it("POST /api/markets/wsx/approve should return 200 and transaction hash", async () => {
         supertest(server)
             .post("/api/markets/wsx/approve")

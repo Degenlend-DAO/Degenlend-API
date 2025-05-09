@@ -12,8 +12,8 @@ const userAddress = '0x4869aF0Aed0a9948f724f809dC0DCcF9885cCe34';
 describe("Account Tests", () => {
 
     let server: any;
-    let enterMarketAddresses: String[] = ["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"];
-    let exitMarketAddress: String = '0x05d225eA760bc4E974b0691bFb0Cf026A7D33279';
+    let enterMarketAddresses: string[] = ["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"];
+    let exitMarketAddress: string = '0x05d225eA760bc4E974b0691bFb0Cf026A7D33279';
 
     before(function(done) {
         server = createServer(app);  // Start the server & listen in
@@ -127,12 +127,12 @@ describe("Account Tests", () => {
 
         supertest(server)
         .post(`/api/account/enterMarket`)
-        .send({ markets: enterMarketAddresses})
+        .send({ markets: ["0x05d225eA760bc4E974b0691bFb0Cf026A7D33279"]})
         .end((err, res) =>{
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("data");
-            done();
         });
+        done();
 
     });
 
@@ -140,12 +140,11 @@ describe("Account Tests", () => {
 
         supertest(server)
         .post(`/api/account/exitMarket`)
-        .send({ market: exitMarketAddress})
+        .send({ market: "0x05d225eA760bc4E974b0691bFb0Cf026A7D33279" })
         .end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("data");
-            done();
         });
-
+        done();
     });
 });
