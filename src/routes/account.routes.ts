@@ -3,7 +3,7 @@ import { getAccountLiquidity, getAccountBalance, getSupplyBalance, getBorrowBala
 
 const router = express.Router();
 
-// Routers for Metadata
+    /// Routers for Metadata ///
 router.get('/rpc_url', getRPCUrl);
 router.get('/network_id', getNetworkId);
 router.get('/chain_id', getChainId);
@@ -25,6 +25,8 @@ router.get('/apy/:userAddress', getNetApy);
 
 // Route to get borrow limit
 router.get('/borrowLimit/:userAddress', getBorrowLimit);
+
+    /// Activities ///
 
 // Route to enter a market
 router.post('/enterMarket', enterMarket);
