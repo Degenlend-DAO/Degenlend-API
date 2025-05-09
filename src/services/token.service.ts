@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 // Load environment variables
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-const Wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
 
 export class TokenService {
@@ -10,7 +10,7 @@ export class TokenService {
     private address: string;
 
     constructor(abi: any, address: string) {
-        this.contract = new ethers.Contract(address, abi, Wallet);
+        this.contract = new ethers.Contract(address, abi, signer);
         this.address = address;
     }
 
