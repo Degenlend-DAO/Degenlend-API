@@ -23,7 +23,7 @@ export const getIsUSDCListedAsCollateral = async (req: Request, res: Response) =
   }
 }
 
-export const getIsUSDCEnabled = async (req: Request, res: Response) {
+export const getIsUSDCEnabled = async (req: Request, res: Response) => {
   try {
 
   } catch {
