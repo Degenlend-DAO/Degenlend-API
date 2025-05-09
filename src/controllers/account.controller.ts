@@ -181,7 +181,8 @@ export const getBorrowLimit = async (req: Request, res: Response) => {
     res.json({
       success: true,
       userAddress,
-      borrowLimit: 1
+      borrowLimit: 1,
+      borrowLimitUsed: 10
     });
   } catch (error) {
     res.json({
@@ -231,7 +232,7 @@ export const enterMarket = async (req: Request, res: Response) => {
 export const exitMarket = async (req: Request, res: Response) => {
   try {
     const { market } = req.body;
-    let parsedMarket = String(market);
+    let parsedMarket = market;
     if (!parsedMarket || !ethers.isAddress(parsedMarket)) {
        res.status(400).json({
         success: false,
