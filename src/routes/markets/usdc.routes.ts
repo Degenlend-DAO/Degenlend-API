@@ -1,15 +1,20 @@
-import { getSupplyAPY, getSupplyBalance, getBorrowBalance, getBorrowAPY, mint, borrow, redeem, repayBorrow, approve } from '../../controllers/markets/usdc.controller';
+import { getIsUSDCListedAsCollateral, getIsUSDCEnabled, getSupplyAPY, getLiquidityInUSD, getBalance, getSupplyBalance, getBorrowBalance, getBorrowAPY, mint, borrow, redeem, repayBorrow, approve } from '../../controllers/markets/usdc.controller';
 // TODO: Implement the following routes: isCollateral, liquidity, borrowLimit, borrowLimitUsed
 
 import express from 'express';
 const router = express.Router();
 
+// Views
+router.get('/isCollateral', getIsUSDCListedAsCollateral);
+router.get('/isEnabled/:userAddress', getIsUSDCEnabled);
 router.get('/supplyAPY', getSupplyAPY);
 router.get('/borrowAPY', getBorrowAPY);
+router.get('/marketLiquidity', getLiquidityInUSD);
+router.get('/balance/:userAddress', getBalance);
 router.get('/supplyBalance/:userAddress', getSupplyBalance);
 router.get('/borrowBalance/:userAddress', getBorrowBalance);
 
-// Actions
+// Actions -- TODO
 router.post('/approve', approve);
 router.post('/mint', mint);
 router.post('/borrow', borrow);
