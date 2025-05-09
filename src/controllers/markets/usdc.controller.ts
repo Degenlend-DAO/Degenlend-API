@@ -15,7 +15,21 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 
 // Views
 
+export const getIsUSDCListedAsCollateral = async (req: Request, res: Response) => {
+  try {
+    
+  } catch {
 
+  }
+}
+
+export const getIsUSDCEnabled = async (req: Request, res: Response) {
+  try {
+
+  } catch {
+
+  }
+}
 
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
@@ -39,6 +53,18 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow APY', details: err });
     }
+}
+
+export const getLiquidityInUSD = async (req: Request, res: Response) => {
+  
+}
+
+export const getBalance = async (req: Request, res: Response) => {
+  try {
+
+  } catch {
+
+  }
 }
 
 export const getSupplyBalance = async (req: Request, res: Response) => {

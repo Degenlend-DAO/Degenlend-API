@@ -15,6 +15,24 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 
 // Views
 
+export const getIsWSXListedAsCollateral = async (req: Request, res: Response) => {
+  try  {
+
+  } catch (err) {
+
+  }
+}
+
+export const getIsWSXEnabled = async (req: Request, res: Response) => {
+
+ try {
+
+  } catch (err) {
+
+  }
+
+}
+
 export const getSupplyAPY = async (req: Request, res: Response) => {
   try {
     const apy = await degenWSX.getSupplyAPY();
@@ -37,6 +55,16 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({ error: 'Failed to get borrow APY', details: err });
   }
+}
+
+export const getLiquidityInUSD = async (req: Request, res: Response) => {
+
+  
+
+}
+
+export const getBalance = async (req: Request, res: Response) => {
+
 }
 
 export const getSupplyBalance = async (req: Request, res: Response) => {
