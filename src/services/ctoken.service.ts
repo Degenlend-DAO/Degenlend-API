@@ -3,14 +3,14 @@ import { ethers } from 'ethers';
 
 // Load environment variables
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
 export class CTokenService {
   private contract: ethers.Contract;
   private address: string;
 
   constructor(abi: any, address: string) {
-    this.contract = new ethers.Contract(address, abi, wallet);
+    this.contract = new ethers.Contract(address, abi, signer);
     this.address = address;
 }
 
@@ -138,7 +138,5 @@ export class CTokenService {
       throw new Error(`Failed to get borrow balance: ${err}`);
     }
   }
-
-  // TODO : Supply Rate, Borrow Rate, Liquidity
 
 }
