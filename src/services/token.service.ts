@@ -20,4 +20,13 @@ export class TokenService {
         return tx.hash;
     }
 
+    async allowance(owner: string, spender: string): Promise<string> {
+        const allowance = await this.contract.allowance(owner, spender);
+        return allowance.toString();
+    }
+
+    async balanceOf(address: string): Promise<string> {
+        const balance = await this.contract.balanceOf(address);
+        return balance.toString();
+    }
 }
