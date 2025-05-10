@@ -37,5 +37,4 @@ export class RelayerService {
         await tx.wait();
         return tx.hash;
       }
-    }
 }
