@@ -2,10 +2,12 @@ import { Request, Response } from 'express';
 import cTokenAbi from '../../abis/CErc20Immutable.json';
 import tokenAbi from '../../abis/ERC20.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
+import { DEGEN_TOKEN_DECIMALS } from '../../utils/constants';
 import { CTokenService } from '../../services/ctoken.service';
 import { testnet_addresses } from '../../utils/constants';
 import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
+import { formatUnits } from 'ethers';
 
 const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
 const degenWSXAddress = testnet_addresses.degenWSX;
@@ -16,21 +18,35 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 // Views
 
 export const getIsWSXListedAsCollateral = async (req: Request, res: Response) => {
-  try  {
-
+  try {
+    const { userAddress } = req.params;
+    const collateralMarkets = await comptroller.getAssetsIn(userAddress);
+    let isCollateral = false;
+    if (collateralMarkets.includes(testnet_addresses.degenWSX)) {
+      isCollateral = true;
+    }
+    res.json({
+      success: true,
+      isCollateral: isCollateral
+    });
   } catch (err) {
-
+    res.status(500).json({ error: 'Failed to check if WSX is listed as collateral', details: (err as Error).message });
   }
 }
 
 export const getIsWSXEnabled = async (req: Request, res: Response) => {
-
- try {
-
+  try {
+    let isEnabled = false;
+    const { owner, spender } = req.body;
+    const allowance = await wsx.allowance(owner, spender);
+    if (BigInt(allowance) > 0n) isEnabled = true;
+    res.json({
+      success: true,
+      isEnabled: isEnabled
+    });
   } catch (err) {
-
+    res.status(500).json({ error: 'Failed to check if WSX is enabled', details: (err as Error).message });
   }
-
 }
 
 export const getSupplyAPY = async (req: Request, res: Response) => {
@@ -57,14 +73,40 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
   }
 }
 
-export const getLiquidityInUSD = async (req: Request, res: Response) => {
+export const getLiquidityInUSD = async (req: Request, res: Response) => { // Incomplete
 
-  
+  try {
+    const cash = await degenWSX.getCash();
+    const wsxPriceMantissa = await priceOracle.getUnderlyingPrice(testnet_addresses.degenWSX);
+    
+
+    const liquidityInCash = formatUnits(cash, DEGEN_TOKEN_DECIMALS);
+    const wsxPrice = formatUnits(wsxPriceMantissa, DEGEN_TOKEN_DECIMALS);
+
+    const wsxLiquidityInUSD = Number(wsxPrice) * Number(liquidityInCash);
+
+    res.json({
+      success: true,
+      wsxLiquidityInUSD: wsxLiquidityInUSD
+    })
+
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get USD liquidity in WSX money market', details: (err as Error).message })
+  }
 
 }
 
 export const getBalance = async (req: Request, res: Response) => {
-
+  try {
+    const { userAddress } = req.params;
+    const balance = await wsx.balanceOf(userAddress);
+    res.json({
+      success: true,
+      balance: balance
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get balance', details: (err as Error).message });
+  }
 }
 
 export const getSupplyBalance = async (req: Request, res: Response) => {
