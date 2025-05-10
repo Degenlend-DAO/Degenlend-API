@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import cTokenAbi from '../../abis/CErc20Immutable.json';
 import tokenAbi from '../../abis/ERC20.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
-import { DEGEN_TOKEN_DECIMALS } from '../../utils/constants';
+import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS } from '../../utils/constants';
 import { CTokenService } from '../../services/ctoken.service';
 import { testnet_addresses } from '../../utils/constants';
 import { ComptrollerService } from '../../services/comptroller.service';
@@ -77,8 +77,8 @@ export const getLiquidityInUSD = async (req: Request, res: Response) => { // Inc
 
   try {
     const cash = await degenWSX.getCash();
-    const wsxPriceMantissa = await priceOracle.getUnderlyingPrice(testnet_addresses.degenWSX);
-    
+    // const wsxPriceMantissa = await priceOracle.getUnderlyingPrice(testnet_addresses.degenWSX);
+    const wsxPriceMantissa = 5000000
 
     const liquidityInCash = formatUnits(cash, DEGEN_TOKEN_DECIMALS);
     const wsxPrice = formatUnits(wsxPriceMantissa, DEGEN_TOKEN_DECIMALS);
@@ -99,10 +99,13 @@ export const getLiquidityInUSD = async (req: Request, res: Response) => { // Inc
 export const getBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-    const balance = await wsx.balanceOf(userAddress);
+    const rawBalance = await wsx.balanceOf(userAddress);
+    const rawBigInt = Number(rawBalance)
+    const formattedBalance = rawBigInt / 1e18 // WSX token has 18 decimals
     res.json({
       success: true,
-      balance: balance
+      rawBalance: rawBalance,
+      balance: formattedBalance
     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get balance', details: (err as Error).message });
@@ -112,21 +115,30 @@ export const getBalance = async (req: Request, res: Response) => {
 export const getSupplyBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-    const balance = await degenWSX.getSupplyBalance(userAddress);
+    const rawBalance = await degenWSX.getSupplyBalance(userAddress); // should return BigInt or string
+    const rawBigInt = Number(rawBalance)
+    const formattedBalance = rawBigInt / DEGEN_TOKEN_BIGINT; // 1e8 as BigInt
     res.json({
       success: true,
-      supplyBalance: balance
+      rawSupplyBalance: rawBigInt,
+      supplyBalance: formattedBalance
     });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to get supply balance', details: err });
+    res.status(500).json({ error: 'Failed to get supply balance', details: `${err}` });
   }
 }
 
 export const getBorrowBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-    const balance = await degenWSX.getBorrowBalance(userAddress);
-    res.json({ success: true, borrowBalance: balance });
+    const rawBalance = await degenWSX.getBorrowBalance(userAddress);
+    const rawBigInt = Number(rawBalance);
+    const formattedBalance = rawBigInt / DEGEN_TOKEN_BIGINT
+    res.json({ 
+      success: true,
+      rawBorrowBalance: rawBigInt,
+      borrowBalance: formattedBalance
+     });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get borrow balance', details: err });
   }
