@@ -8,3 +8,4 @@ export const testnet_addresses = {
   }
 
 export const DEGEN_TOKEN_DECIMALS = 8;
+export const DEGEN_TOKEN_BIGINT = 100_000_000
