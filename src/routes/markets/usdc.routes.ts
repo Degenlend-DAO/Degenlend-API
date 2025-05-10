@@ -5,7 +5,7 @@ import express from 'express';
 const router = express.Router();
 
 // Views
-router.get('/isCollateral', getIsUSDCListedAsCollateral);
+router.get('/isCollateral/:userAddress', getIsUSDCListedAsCollateral);
 router.get('/isEnabled/:userAddress', getIsUSDCEnabled);
 router.get('/supplyAPY', getSupplyAPY);
 router.get('/borrowAPY', getBorrowAPY);
