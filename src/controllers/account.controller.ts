@@ -14,6 +14,11 @@ const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses.degenWSX;
 const comptrollerService = new ComptrollerService(comptrollerAbi.abi, comptrollerAddress);
 const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
 
+const degenUSDCAddress = testnet_addresses.degenUSDC;
+const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
+
+const degenWSXAddress = testnet_addresses.degenWSX;
+const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 
 // Account metadata
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -133,11 +138,22 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
 
-    let netSupplyBalance = 1;
+        // Fetch supply balances in parallel
+        const [wsxRaw, usdcRaw] = await Promise.all([
+          degenWSX.getSupplyBalance(userAddress),
+          degenUSDC.getSupplyBalance(userAddress)
+        ]);
+    
+        const wsx = Number(wsxRaw)
+        const usdc = Number(usdcRaw)
+      
+        let rawNetSupplyBalance = wsxRaw + usdcRaw;
+        let netSupplyBalance = wsx + usdc;
 
     res.json({
       success: true,
       userAddress,
+      rawSupplyBalance: rawNetSupplyBalance,
       supplyBalance: netSupplyBalance
     })
   } catch (error) {
@@ -157,10 +173,21 @@ export const getBorrowBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
 
-    let netBorrowBalance = 1;
+    // Fetch borrow balances in parallel
+    const [wsxRaw, usdcRaw] = await Promise.all([
+      degenWSX.getBorrowBalance(userAddress),
+      degenUSDC.getBorrowBalance(userAddress)
+    ]);
+
+    const wsx = Number(wsxRaw)
+    const usdc = Number(usdcRaw)
+  
+    let rawNetBorrowBalance = wsxRaw + usdcRaw;
+    let netBorrowBalance = wsx + usdc;
     res.json({
       success: true,
       userAddress,
+      rawBorrowBalance: rawNetBorrowBalance,
       borrowBalance: netBorrowBalance
     });
   } catch (error) {
@@ -200,10 +227,48 @@ export const getBorrowLimit = async (req: Request, res: Response) => {
 export const getNetApy = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
+    
+    // Fetch balances and APYs in parallel
+    const [
+      wsxSupplyRaw, usdcSupplyRaw,
+      wsxBorrowRaw, usdcBorrowRaw,
+      wsxSupplyApy, usdcSupplyApy,
+      wsxBorrowApy, usdcBorrowApy
+    ] = await Promise.all([
+      degenWSX.getSupplyBalance(userAddress),
+      degenUSDC.getSupplyBalance(userAddress),
+      degenWSX.getBorrowBalance(userAddress),
+      degenUSDC.getBorrowBalance(userAddress),
+      degenWSX.getSupplyAPY(),
+      degenUSDC.getSupplyAPY(),
+      degenWSX.getBorrowAPY(),
+      degenUSDC.getBorrowAPY()
+    ]);
+
+    // Convert balances to numbers (or BigInt if needed)
+    const wsxSupply = Number(wsxSupplyRaw);
+    const usdcSupply = Number(usdcSupplyRaw);
+    const wsxBorrow = Number(wsxBorrowRaw);
+    const usdcBorrow = Number(usdcBorrowRaw);
+
+    // Weighted supply APY
+    const totalSupply = wsxSupply + usdcSupply;
+    const weightedSupplyApy = totalSupply > 0
+      ? ((wsxSupply * Number(wsxSupplyApy)) + (usdcSupply * Number(usdcSupplyApy))) / totalSupply
+      : 0;
+
+    // Weighted borrow APY
+    const totalBorrow = wsxBorrow + usdcBorrow;
+    const weightedBorrowApy = totalBorrow > 0
+      ? ((wsxBorrow * Number(wsxBorrowApy)) + (usdcBorrow * Number(usdcBorrowApy))) / totalBorrow
+      : 0;
+
+    // Net APY = supply APY - borrow APY
+    const netApy = weightedSupplyApy - weightedBorrowApy;
     res.json({
       success: true,
       userAddress,
-      netApy: 1
+      netApy: netApy
     });
   } catch (error) {
     res.json({
