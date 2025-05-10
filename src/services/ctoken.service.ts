@@ -12,7 +12,7 @@ export class CTokenService {
   constructor(abi: any, address: string) {
     this.contract = new ethers.Contract(address, abi, signer);
     this.address = address;
-}
+  }
 
   async mint(amount: string): Promise<string> {
     const tx = await this.contract.mint(amount);
@@ -56,11 +56,11 @@ export class CTokenService {
   // Get supply APY
   async getSupplyAPY(): Promise<string> {
     try {
-      const supplyRatePerBlock:BigInt = await this.contract.supplyRatePerBlock();
+      const supplyRatePerBlock: BigInt = await this.contract.supplyRatePerBlock();
       const blocksPerYear = 2102400n; // ~13.3 seconds per block
       // Forcefully cast supplyrateperblock to bigInt (it already should be a BigInt, this is a failsafe)
       const rate = BigInt(supplyRatePerBlock.toString());
-      
+
       const scaledRate = (rate * blocksPerYear) / BigInt(1e16); // Convert to percentage
       return scaledRate.toString();
     } catch (error) {
@@ -71,7 +71,7 @@ export class CTokenService {
   // Get borrow APY
   async getBorrowAPY(): Promise<string> {
     try {
-      const borrowRatePerBlock:BigInt = await this.contract.borrowRatePerBlock();
+      const borrowRatePerBlock: BigInt = await this.contract.borrowRatePerBlock();
       const blocksPerYear = 2102400n; // ~13.3 seconds per block
       // Forcefully cast supplyrateperblock to bigInt (it already should be a BigInt, this is a failsafe)
       const rate = BigInt(borrowRatePerBlock.toString());
