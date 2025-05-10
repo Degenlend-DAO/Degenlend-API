@@ -3,7 +3,7 @@ import cTokenAbi from '../../abis/CErc20Immutable.json';
 import tokenAbi from '../../abis/ERC20.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
 import { CTokenService } from '../../services/ctoken.service';
-import { testnet_addresses } from '../../utils/constants';
+import { DEGEN_TOKEN_BIGINT, testnet_addresses } from '../../utils/constants';
 import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 
@@ -85,7 +85,14 @@ export const getLiquidityInUSD = async (req: Request, res: Response) => {
 export const getBalance = async (req: Request, res: Response) => {
   try {
     const { userAddress } = req.params;
-    const balance = await usdc.balanceOf(userAddress)
+    const rawBalance = await usdc.balanceOf(userAddress);
+    const rawBigInt = Number(rawBalance)
+    const formattedBalance = rawBigInt / 1e6 // WSX token has 6 decimals
+    res.json({
+      success: true,
+      rawBalance: rawBalance,
+      balance: formattedBalance
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get balance', details: err })
   }
@@ -93,12 +100,15 @@ export const getBalance = async (req: Request, res: Response) => {
 
 export const getSupplyBalance = async (req: Request, res: Response) => {
     try {
-        const { userAddress } = req.params;
-        const balance = await degenUSDC.getSupplyBalance(userAddress);
-        res.json({
-          success: true, 
-          supplyBalance: balance
-        });
+    const { userAddress } = req.params;
+    const rawBalance = await degenUSDC.getSupplyBalance(userAddress); // should return BigInt or string
+    const rawBigInt = Number(rawBalance)
+    const formattedBalance = rawBigInt / DEGEN_TOKEN_BIGINT; // 1e8 as BigInt
+    res.json({
+      success: true,
+      rawSupplyBalance: rawBigInt,
+      supplyBalance: formattedBalance
+    });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get supply balance', details: err });
     }
@@ -106,9 +116,15 @@ export const getSupplyBalance = async (req: Request, res: Response) => {
 
 export const getBorrowBalance = async (req: Request, res: Response) => {
     try {
-        const { userAddress } = req.params;
-        const balance = await degenUSDC.getBorrowBalance(userAddress);
-        res.json({ success: true, borrowBalance: balance });
+    const { userAddress } = req.params;
+    const rawBalance = await degenUSDC.getBorrowBalance(userAddress);
+    const rawBigInt = Number(rawBalance);
+    const formattedBalance = rawBigInt / DEGEN_TOKEN_BIGINT
+    res.json({ 
+      success: true,
+      rawBorrowBalance: rawBigInt,
+      borrowBalance: formattedBalance
+     });
     } catch (err) {
         res.status(500).json({ error: 'Failed to get borrow balance', details: err });
     }
