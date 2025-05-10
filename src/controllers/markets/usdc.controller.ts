@@ -17,17 +17,36 @@ const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses
 
 export const getIsUSDCListedAsCollateral = async (req: Request, res: Response) => {
   try {
-    
-  } catch {
-
+    const { userAddress } = req.params;
+    const collateralMarkets = await comptroller.getAssetsIn(userAddress);
+    let isCollateral = false;
+    console.log(`\n\n Collateral Markets: ${collateralMarkets} \n\n`);
+    if (collateralMarkets.includes(testnet_addresses.degenUSDC)) {
+        isCollateral = true;
+    } else {
+        isCollateral = false;
+    }
+    res.json({
+      success: true,
+      isCollateral: isCollateral
+    })
+  } catch (err) {
+    res.status(500).json({ error: 'failed to check if USDC is listed as collateral', details: (err as Error).message })
   }
 }
 
 export const getIsUSDCEnabled = async (req: Request, res: Response) => {
   try {
-
-  } catch {
-
+    let isEnabled = false;
+    const { owner, spender } = req.body;
+    const allowance = await usdc.allowance(owner, spender);
+    if (BigInt(allowance) > 0n) isEnabled = true;
+    res.json({
+      success: true,
+      isEnabled: isEnabled
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to check if USDC is enabled', details: (err as Error).message })
   }
 }
 
@@ -56,14 +75,19 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
 }
 
 export const getLiquidityInUSD = async (req: Request, res: Response) => {
-  
+  try {
+
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get liquidity in USD', details: err})
+  }
 }
 
 export const getBalance = async (req: Request, res: Response) => {
   try {
-
-  } catch {
-
+    const { userAddress } = req.params;
+    const balance = await usdc.balanceOf(userAddress)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get balance', details: err })
   }
 }
 
