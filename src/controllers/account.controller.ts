@@ -9,15 +9,15 @@ import { testnet_addresses } from '../utils/constants';
 
 // Initialize ComptrollerService and CTokenService
 const comptrollerAddress = process.env.COMPTROLLER_ADDRESS! || testnet_addresses.comptroller;
-const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses.degenWSX;
+const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses['degenWSX#CErc20Immutable'];
 
 const comptrollerService = new ComptrollerService(comptrollerAbi.abi, comptrollerAddress);
 const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
 
-const degenUSDCAddress = testnet_addresses.degenUSDC;
+const degenUSDCAddress = testnet_addresses['degenUSDC#CErc20Immutable'];
 const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
 
-const degenWSXAddress = testnet_addresses.degenWSX;
+const degenWSXAddress = testnet_addresses['degenWSX#CErc20Immutable'];
 const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 
 // Account metadata

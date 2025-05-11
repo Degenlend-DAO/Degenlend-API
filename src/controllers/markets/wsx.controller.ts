@@ -9,8 +9,8 @@ import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 import { formatUnits } from 'ethers';
 
-const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
-const degenWSXAddress = testnet_addresses.degenWSX;
+const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses['degenWSX#CErc20Immutable'];
+const degenWSXAddress = testnet_addresses['degenWSX#CErc20Immutable'];
 const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 const wsx = new TokenService(tokenAbi.abi, wsxAddress);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
@@ -22,7 +22,7 @@ export const getIsWSXListedAsCollateral = async (req: Request, res: Response) =>
     const { userAddress } = req.params;
     const collateralMarkets = await comptroller.getAssetsIn(userAddress);
     let isCollateral = false;
-    if (collateralMarkets.includes(testnet_addresses.degenWSX)) {
+    if (collateralMarkets.includes(testnet_addresses['degenWSX#CErc20Immutable'])) {
       isCollateral = true;
     }
     res.json({

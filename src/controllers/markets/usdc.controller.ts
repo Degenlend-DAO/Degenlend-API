@@ -8,7 +8,7 @@ import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 
 const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.USDC;
-const degenUSDCAddress = testnet_addresses.degenUSDC;
+const degenUSDCAddress = testnet_addresses['degenUSDC#CErc20Immutable'];;
 const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
 const usdc = new TokenService(tokenAbi.abi, usdcAddress);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
@@ -21,7 +21,7 @@ export const getIsUSDCListedAsCollateral = async (req: Request, res: Response) =
     const collateralMarkets = await comptroller.getAssetsIn(userAddress);
     let isCollateral = false;
     console.log(`\n\n Collateral Markets: ${collateralMarkets} \n\n`);
-    if (collateralMarkets.includes(testnet_addresses.degenUSDC)) {
+    if (collateralMarkets.includes(testnet_addresses['degenUSDC#CErc20Immutable'])) {
         isCollateral = true;
     } else {
         isCollateral = false;
