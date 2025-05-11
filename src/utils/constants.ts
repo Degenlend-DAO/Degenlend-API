@@ -5,6 +5,8 @@ export const testnet_addresses = {
     "WSX": '0x2D4e10Ee64CCF407C7F765B363348f7F62D2E06e',
     "degenUSDC": '0x05d225eA760bc4E974b0691bFb0Cf026A7D33279', // old: 0xc3eAff959EB22aea6581D7bf52d4d44BdbbDCcD1
     "degenWSX": '0xD2F6594c692985850F85fd1b08d1F9DE0f719Cb5',  // old: 0xf547a2FE994E2207d4d7F13e69B0b2C0aC24cc2f
+    "degenWSX#CErc20Immutable": '0x77273a5B3779e339B990e4BACf0222fc04e93198', // correct decimals
+    "degenUSDC#CErc20Immutable": '0xC8A9b9B44B7DC55351706d94Cd986B053C5f2EaD' // correct decimals
   }
 
 export const DEGEN_TOKEN_DECIMALS = 8;
