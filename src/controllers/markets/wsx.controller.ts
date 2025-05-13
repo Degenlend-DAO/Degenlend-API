@@ -9,7 +9,7 @@ import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
 import { formatUnits } from 'ethers';
 
-const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses['degenWSX#CErc20Immutable'];
+const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
 const degenWSXAddress = testnet_addresses['degenWSX#CErc20Immutable'];
 const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 const wsx = new TokenService(tokenAbi.abi, wsxAddress);
