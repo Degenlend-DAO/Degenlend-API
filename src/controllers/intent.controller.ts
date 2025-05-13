@@ -2,9 +2,10 @@
 import { Request, Response } from 'express';
 import { RelayerService } from '../services/relayer.service';
 import RelayerABI from '../abis/DegenLendRelayer.json';
+import { testnet_addresses } from '../utils/constants';
 
-const relayerAddress = process.env.RELAYER_ADDRESS!;
-const relayer = new RelayerService(RelayerABI, relayerAddress);
+const relayerAddress = process.env.RELAYER_ADDRESS || testnet_addresses.degenlendRelayer;
+const relayer = new RelayerService(RelayerABI.abi, relayerAddress);
 
 export const mintIntent = async (req: Request, res: Response) => {
   try {
