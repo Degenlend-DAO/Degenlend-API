@@ -9,9 +9,9 @@ import {
 
 const router = Router();
 
-router.post('/intent/mint', mintIntent);
-router.post('/intent/redeem', redeemIntent);
-router.post('/intent/borrow', borrowIntent);
-router.post('/intent/repay', repayIntent);
+router.post('/mint', mintIntent);
+router.post('/redeem', redeemIntent);
+router.post('/borrow', borrowIntent);
+router.post('/repay', repayIntent);
 
 export default router;
