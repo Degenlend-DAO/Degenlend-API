@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAccountLiquidity, getAccountBalance, getSupplyBalance, getBorrowBalance, getNetApy, getBorrowLimit, getChainId, getNetworkId, getRPCUrl, enterMarket, exitMarket } from '../controllers/account.controller';
+import { getAccountLiquidity, getAccountBalance, getSupplyBalance, getBorrowBalance, getNetApy, getBorrowLimit, getChainId, getNetworkId, getRPCUrl, enterMarket, exitMarket, getCurrentIntentNonce } from '../controllers/account.controller';
 
 const router = express.Router();
 
@@ -13,6 +13,8 @@ router.get('/liquidity/:userAddress', getAccountLiquidity);
 
 // Route to get cToken balance of a user
 router.get('/balance/:userAddress', getAccountBalance);
+
+router.get('/currentNonce/:userAddress', getCurrentIntentNonce);
 
 // Route to get supply balance
 router.get('/supplyBalance/:userAddress', getSupplyBalance);

@@ -9,9 +9,15 @@ export class RelayerService {
     private contract: ethers.Contract;
     private address: String;
 
+
     constructor(abi: any, address: string) {
         this.contract = new ethers.Contract(address, abi, signer);
         this.address = address;
+    }
+
+    async getNonce(user: string): Promise<string> {
+      const nonce = await this.contract.nonces(user);
+      return nonce.toString();
     }
 
     async mintWithIntent(user: string, cToken: string, amount: string, deadline: number, signature: string): Promise<string> {

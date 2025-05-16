@@ -4,8 +4,11 @@ import { ComptrollerService } from '../services/comptroller.service';
 import { CTokenService } from '../services/ctoken.service';
 import comptrollerAbi from '../abis/Comptroller.json';
 import cTokenAbi from '../abis/CErc20Immutable.json';
-import { formatUnits } from 'ethers';
+
 import { testnet_addresses } from '../utils/constants';
+
+import { RelayerService } from '../services/relayer.service';
+import RelayerABI from '../abis/DegenLendRelayer.json';
 
 // Initialize ComptrollerService and CTokenService
 const comptrollerAddress = process.env.COMPTROLLER_ADDRESS! || testnet_addresses.comptroller;
@@ -13,6 +16,10 @@ const cTokenAddress = process.env.CTOKEN_ADDRESS! || testnet_addresses['degenWSX
 
 const comptrollerService = new ComptrollerService(comptrollerAbi.abi, comptrollerAddress);
 const cTokenService = new CTokenService(cTokenAbi.abi, cTokenAddress);
+
+// Initialize Relayer
+const relayerAddress = process.env.RELAYER_ADDRESS || testnet_addresses.degenlendRelayer;
+const relayer = new RelayerService(RelayerABI.abi, relayerAddress);
 
 const degenUSDCAddress = testnet_addresses['degenUSDC#CErc20Immutable'];
 const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
@@ -129,6 +136,29 @@ export const getAccountBalance = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  Get the user's nonce
+ */
+export const getCurrentIntentNonce = async (req: Request, res: Response) => {
+  try {
+    const { userAddress } = req.params;
+
+    const currentNonce: string = await relayer.getNonce(userAddress);
+
+    res.json({
+      success: true,
+      userAddress,
+      currentNonce
+    })
+  } catch (error) {
+    console.error(`[ERROR] Failed to fetch current account intent nonce`);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch account nonce',
+      details: (error as Error).message
+    })
+  }
+}
 
 /**
  * Get Supply Balance
