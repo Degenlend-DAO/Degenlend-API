@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Views
 router.get('/isCollateral/:userAddress', getIsUSDCListedAsCollateral);
-router.get('/isEnabled/:userAddress', getIsUSDCEnabled);
+router.get('/isEnabled/:userAddress', getIsUSDCEnabled); //bug here
 router.get('/supplyAPY', getSupplyAPY);
 router.get('/borrowAPY', getBorrowAPY);
 router.get('/marketLiquidity', getLiquidityInUSD);
