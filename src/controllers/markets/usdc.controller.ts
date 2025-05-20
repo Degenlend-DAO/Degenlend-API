@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
-import cTokenAbi from '../../abis/CErc20Immutable.json';
 import tokenAbi from '../../abis/ERC20.json';
+import OracleAbi from '../../abis/PriceOracle.json';
+import cTokenAbi from '../../abis/CErc20Immutable.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
-import { CTokenService } from '../../services/ctoken.service';
-import { DEGEN_TOKEN_BIGINT, testnet_addresses } from '../../utils/constants';
-import { ComptrollerService } from '../../services/comptroller.service';
 import { TokenService } from '../../services/token.service';
+import { OracleService } from '../../services/oracle.service';
+import { CTokenService } from '../../services/ctoken.service';
+import { ComptrollerService } from '../../services/comptroller.service';
+import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS, testnet_addresses } from '../../utils/constants';
+
 
 const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.USDC;
 const degenUSDCAddress = testnet_addresses['degenUSDC#CErc20Immutable'];;
 const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
 const usdc = new TokenService(tokenAbi.abi, usdcAddress);
+const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.price_oracle);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 
 // Views
@@ -76,7 +80,15 @@ export const getBorrowAPY = async (req: Request, res: Response) => {
 
 export const getLiquidityInUSD = async (req: Request, res: Response) => {
   try {
+    const cash = await degenUSDC.getCash();
+    const liquidityInCash = Number(cash) / DEGEN_TOKEN_DECIMALS; // USDC has 6 decimals
+    const usdcPrice = await priceOracle.getUnderlyingPrice(testnet_addresses.degenUSDC);
+    const usdcLiquidityInUSD = Number(usdcPrice) * Number(liquidityInCash);
 
+    res.json({
+      success: true,
+      usdcLiquidityInUSD: usdcLiquidityInUSD
+    })
   } catch (err) {
     res.status(500).json({ error: 'Failed to get liquidity in USD', details: err})
   }

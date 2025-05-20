@@ -1,18 +1,22 @@
 import { Request, Response } from 'express';
-import cTokenAbi from '../../abis/CErc20Immutable.json';
 import tokenAbi from '../../abis/ERC20.json';
+import OracleAbi from '../../abis/PriceOracle.json';
+import cTokenAbi from '../../abis/CErc20Immutable.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
-import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS } from '../../utils/constants';
-import { CTokenService } from '../../services/ctoken.service';
-import { testnet_addresses } from '../../utils/constants';
-import { ComptrollerService } from '../../services/comptroller.service';
-import { TokenService } from '../../services/token.service';
+
 import { formatUnits } from 'ethers';
+import { testnet_addresses } from '../../utils/constants';
+import { TokenService } from '../../services/token.service';
+import { OracleService } from '../../services/oracle.service';
+import { CTokenService } from '../../services/ctoken.service';
+import { ComptrollerService } from '../../services/comptroller.service';
+import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS } from '../../utils/constants';
 
 const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
 const degenWSXAddress = testnet_addresses['degenWSX#CErc20Immutable'];
 const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 const wsx = new TokenService(tokenAbi.abi, wsxAddress);
+const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.price_oracle);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 
 // Views
@@ -77,8 +81,7 @@ export const getLiquidityInUSD = async (req: Request, res: Response) => { // Inc
 
   try {
     const cash = await degenWSX.getCash();
-    // const wsxPriceMantissa = await priceOracle.getUnderlyingPrice(testnet_addresses.degenWSX);
-    const wsxPriceMantissa = 5000000
+    const wsxPriceMantissa = await priceOracle.getUnderlyingPrice(testnet_addresses.degenWSX);
 
     const liquidityInCash = formatUnits(cash, DEGEN_TOKEN_DECIMALS);
     const wsxPrice = formatUnits(wsxPriceMantissa, DEGEN_TOKEN_DECIMALS);
