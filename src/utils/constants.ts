@@ -10,5 +10,11 @@ export const testnet_addresses = {
     "degenUSDC#CErc20Immutable": '0x35f1263CE6c06128c4075A1a82050CEB09fa1eB3' // correct decimals
   }
 
+export const mainnet_addresses = {
+
+  "degenlendRelayer": "0xBc855FEFF33b5c05C467c24D0364F365ecC9eE5B"
+
+}
+
 export const DEGEN_TOKEN_DECIMALS = 8;
 export const DEGEN_TOKEN_BIGINT = 100_000_000
