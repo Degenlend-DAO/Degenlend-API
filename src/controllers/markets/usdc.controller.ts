@@ -14,7 +14,7 @@ const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.USDC;
 const degenUSDCAddress = testnet_addresses['degenUSDC#CErc20Immutable'];;
 const degenUSDC = new CTokenService(cTokenAbi.abi, degenUSDCAddress);
 const usdc = new TokenService(tokenAbi.abi, usdcAddress);
-const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.price_oracle);
+const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.priceOracle);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 
 // Views

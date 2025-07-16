@@ -16,7 +16,7 @@ const wsxAddress = process.env.WSX_CTOKEN_ADDRESS || testnet_addresses.WSX;
 const degenWSXAddress = testnet_addresses['degenWSX#CErc20Immutable'];
 const degenWSX = new CTokenService(cTokenAbi.abi, degenWSXAddress);
 const wsx = new TokenService(tokenAbi.abi, wsxAddress);
-const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.price_oracle);
+const priceOracle = new OracleService(OracleAbi.abi, testnet_addresses.priceOracle);
 const comptroller = new ComptrollerService(ComptrollerAbi.abi, testnet_addresses.comptroller);
 
 // Views
