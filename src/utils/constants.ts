@@ -1,6 +1,6 @@
 export const testnet_addresses = {
     "comptroller": '0xB078459124e55Eb9F2937c86c0Ec893ff4FF082b',
-    "price_oracle": '0x6ca684b4773aF95AB5AE8d0aB7bA078237536DDF',
+    "priceOracle": '0x6ca684b4773aF95AB5AE8d0aB7bA078237536DDF',
     "USDC": '0x5147891461a7C81075950f8eE6384e019e39ab98',
     "WSX": '0x2D4e10Ee64CCF407C7F765B363348f7F62D2E06e',
     "degenlendRelayer": "0x7d3Aef7925B0ad621032F87e42b2Af12e5639F76",
@@ -11,8 +11,15 @@ export const testnet_addresses = {
   }
 
 export const mainnet_addresses = {
-
-  "degenlendRelayer": "0xBc855FEFF33b5c05C467c24D0364F365ecC9eE5B"
+  "comptroller": "",
+  "priceOracle": "",
+  "degenlendRelayer": "0xBc855FEFF33b5c05C467c24D0364F365ecC9eE5B",
+  "USDC": "",
+  "WSX": "",
+  "degenUSDC": "",
+  "degenWSX": "",
+  "degenUSDC#CErc20Immutable": "",
+  "degenWSX#CErc20Immutable": "",
 
 }
 
