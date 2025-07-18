@@ -5,7 +5,7 @@ import { CTokenService } from '../services/ctoken.service';
 import comptrollerAbi from '../abis/Comptroller.json';
 import cTokenAbi from '../abis/CErc20Immutable.json';
 
-import { testnet_addresses } from '../utils/constants';
+import { testnet_addresses, mainnet_addresses } from '../utils/constants';
 
 import { RelayerService } from '../services/relayer.service';
 import RelayerABI from '../abis/DegenLendRelayer.json';

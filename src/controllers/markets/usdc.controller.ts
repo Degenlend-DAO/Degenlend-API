@@ -7,7 +7,7 @@ import { TokenService } from '../../services/token.service';
 import { OracleService } from '../../services/oracle.service';
 import { CTokenService } from '../../services/ctoken.service';
 import { ComptrollerService } from '../../services/comptroller.service';
-import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS, testnet_addresses } from '../../utils/constants';
+import { DEGEN_TOKEN_BIGINT, DEGEN_TOKEN_DECIMALS, testnet_addresses, mainnet_addresses } from '../../utils/constants';
 
 
 const usdcAddress = process.env.USDC_CTOKEN_ADDRESS || testnet_addresses.USDC;

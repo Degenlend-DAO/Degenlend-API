@@ -5,7 +5,7 @@ import cTokenAbi from '../../abis/CErc20Immutable.json';
 import ComptrollerAbi from '../../abis/Comptroller.json';
 
 import { formatUnits } from 'ethers';
-import { testnet_addresses } from '../../utils/constants';
+import { testnet_addresses, mainnet_addresses } from '../../utils/constants';
 import { TokenService } from '../../services/token.service';
 import { OracleService } from '../../services/oracle.service';
 import { CTokenService } from '../../services/ctoken.service';
